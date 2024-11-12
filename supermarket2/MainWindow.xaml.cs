@@ -33,34 +33,37 @@ namespace supermarket2
             LoadCustomers();
             LoadProductsForComboBox();
             LoadCustomersForComboBox();
-            dataGridCartItems.ItemsSource = cartItems;
+            LoadObservableCollection();
             LoadSalesSummary();
         }
+
         private void LoadProducts()
         {
             dataGridProducts.ItemsSource = SupermarketEntities.Products.ToList();
         }
+
         public void clearpro()
         {
-            Product product = new Product();
             txtProductName.Clear();
             txtQuantity.Clear();
             txtPrice.Clear();
-            product.SupplierID.ToString();
+            Suppliers.Clear();
         }
+
         private void AddProduct_Click(object sender, RoutedEventArgs e)
         {
             Product product = new Product
             {
                 ProductName = txtProductName.Text,
                 Quantity = int.Parse(txtQuantity.Text),
-                Price = int.Parse(txtPrice.Text),
+                Price = decimal.Parse(txtPrice.Text),
                 SupplierID =int.Parse(Suppliers.Text)
             };
             SupermarketEntities.Products.Add(product);
             SupermarketEntities.SaveChanges();
             LoadProducts();
             clearpro();
+            LoadProductsForComboBox();
         }
 
         private void UpdateProduct_Click(object sender, RoutedEventArgs e)
@@ -72,6 +75,7 @@ namespace supermarket2
             SupermarketEntities.SaveChanges();
             LoadProducts();
             clearpro();
+            LoadProductsForComboBox();
         }
         private void dataGridProducts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -84,20 +88,25 @@ namespace supermarket2
                 Suppliers.Text = selectedproduct.SupplierID.ToString();
             }
         }
+
         private void deleteProduct_Click(object sender, RoutedEventArgs e)
         {
             SupermarketEntities.Products.Remove(selectedproduct);
             SupermarketEntities.SaveChanges();
             LoadProducts();
             clearpro();
+            LoadProductsForComboBox();
         }
+
         // --------------------------------------------------------------------------------------- //
         // --------------------------------------------------------------------------------------- //
         // --------------------------------------------------------------------------------------- //
+
         private void Loadsuppliers()
         {
             dataGridsuppliers.ItemsSource = SupermarketEntities.Suppliers.ToList();
         }
+
         public void clearsup()
         {
             SupplierName.Clear();
@@ -177,6 +186,7 @@ namespace supermarket2
             SupermarketEntities.SaveChanges();
             LoadCustomers();
             clearcus();
+            LoadCustomersForComboBox();
         }
 
         private void UpdateCustomer_Click(object sender, RoutedEventArgs e)
@@ -187,6 +197,7 @@ namespace supermarket2
             SupermarketEntities.SaveChanges();
             LoadCustomers();
             clearcus();
+            LoadCustomersForComboBox();
         }
 
         private void dataGridcustomers_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -206,6 +217,7 @@ namespace supermarket2
             SupermarketEntities.SaveChanges();
             LoadCustomers();
             clearcus();
+            LoadCustomersForComboBox();
         }
 
 
@@ -214,7 +226,11 @@ namespace supermarket2
         // --------------------------------------------------------------------------------------- //
 
 
-        private ObservableCollection<Cart> cartItems = new ObservableCollection<Cart>();
+        public ObservableCollection<Cart> cartItems = new ObservableCollection<Cart>(); 
+        private void LoadObservableCollection()
+        {
+            dataGridCartItems.ItemsSource = cartItems;
+        }
         private void LoadCustomersForComboBox()
         {
             cmbCustomerName.ItemsSource = SupermarketEntities.Customers.ToList();
@@ -227,6 +243,18 @@ namespace supermarket2
             cmbProduct.ItemsSource = SupermarketEntities.Products.ToList();
             cmbProduct.DisplayMemberPath = "ProductName";
             cmbProduct.SelectedValuePath = "ProductID";
+        }
+        private void LoadCart()
+        {
+            cmbProduct.SelectedItem = null;
+            txtCartQuantity.Clear();
+        }
+
+        private void LoadCart_after_tranzaction()
+        {
+            cmbCustomerName.SelectedItem=null;
+            cmbProduct.SelectedItem = null;
+            txtCartQuantity.Clear();
         }
 
         private void LoadCartItemsFromDatabase()
@@ -258,6 +286,7 @@ namespace supermarket2
                 SupermarketEntities.Carts.Add(newItem);
                 SupermarketEntities.SaveChanges();
                 LoadCartItemsFromDatabase();
+                LoadCart();
             }
             else
             {
@@ -314,17 +343,20 @@ namespace supermarket2
             SupermarketEntities.SaveChanges();
             UpdateTotalAmount();
             LoadSalesSummary();
+            LoadCart_after_tranzaction();
             MessageBox.Show("Transaction completed successfully and stock updated.");
         }
+
         private void LoadSalesSummary()
         {
             var salesData = (from sale in SupermarketEntities.Sales
-                             select new
-                             {
-                                 SaleID = sale.SaleID,
-                                 CustomerID = sale.CustomerID,
-                                 TotalAmount = sale.TotalAmount
-                             }).ToList();
+                select new
+                {
+                    SaleID = sale.SaleID,
+                    CustomerID = sale.CustomerID,
+                    SaleDate =sale.SaleDate,
+                    TotalAmount = sale.TotalAmount
+                }).ToList();
 
             dataGridSalesSummary.ItemsSource = salesData;
 
@@ -333,4 +365,5 @@ namespace supermarket2
         }
 
     }
+
 }

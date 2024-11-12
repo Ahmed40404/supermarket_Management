@@ -8,18 +8,18 @@
         Title="MainWindow" Height="450" Width="800">
     <Window.Resources>
         <Style TargetType="local:MainWindow">
-            <Setter Property="Background" Value="#FFD49F61"></Setter>
+            <Setter Property="Background" Value="#FFCC914B"></Setter>
         </Style>
         
         <Style TargetType="DataGrid">
-            <Setter Property="Background" Value="#FFD49F61"></Setter>
+            <Setter Property="Background" Value="#FFCC914B"></Setter>
         </Style>
     </Window.Resources>
     <Grid >
 
-        <TabControl Background="#FFD49F61">
+        <TabControl Background="#FFCC914B">
             <!-- Product Tab -->
-            <TabItem Header="Products">
+            <TabItem Header="Products" Background="#FFE8B06D">
                 <StackPanel>
                     <Label Content="Product Name:"/>
                     <TextBox x:Name="txtProductName" Width="200"/>
@@ -43,7 +43,7 @@
                 </StackPanel>
             </TabItem>
 
-            <TabItem Header="customers">
+            <TabItem Header="customers" Background="#FFE8B06D">
                 <StackPanel>
                     <Label Content="Customer Name:"/>
                     <TextBox x:Name="txtCustomerName" Width="200"/>
@@ -65,7 +65,7 @@
                 </StackPanel>
             </TabItem>
 
-            <TabItem Header="supplieres">
+            <TabItem Header="supplieres" Background="#FFE8B06D">
                 <StackPanel>
                     <Label Content="Supplier Name:"/>
                     <TextBox x:Name="SupplierName" Width="200"/>
@@ -89,7 +89,8 @@
                     </DataGrid>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Cart" Margin="0,0,-13,0">
+
+            <TabItem Header="Cart" Margin="0,0,-13,0" Background="#FFE8B06D">
                 <StackPanel>
 
                     <Label Content="Customer Name:"/>
@@ -116,9 +117,10 @@
                     <Button Content="Complete Transaction" Click="CompleteTransaction_Click" Margin="0,5"/>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Sales Summary" Margin="10,0,-9,0">
+
+            <TabItem Header="Sales Summary" Margin="10,0,-9,0" Background="#FFE8B06D">
                 <StackPanel>
-                    <DataGrid x:Name="dataGridSalesSummary" AutoGenerateColumns="True" />
+                    <DataGrid x:Name="dataGridSalesSummary" AutoGenerateColumns="True"/>
                     <Label x:Name="lblTotalSales" Content="Total Sales: $0.00" FontSize="16" FontWeight="Bold" Margin="10,10,0,0"/>
                 </StackPanel>
             </TabItem>

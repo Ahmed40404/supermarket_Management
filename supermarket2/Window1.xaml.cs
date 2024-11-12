@@ -26,9 +26,11 @@ namespace supermarket2
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            string name = "Ahmed";
+            string name1 = "Admin";
+            string name2 = "Admin2";
             string pass1 = "404";
-            if (username.Text==name &&pass.Password==pass1)
+            string pass2 = "404";
+            if (username.Text==name1 &&pass.Password==pass1 || username.Text==name2 &&pass.Password==pass2)
             {
                 MainWindow mainWindow = new MainWindow();
                 mainWindow.Show();
